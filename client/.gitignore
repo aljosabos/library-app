@@ -1,0 +1,45 @@
+# Node modules
+node_modules/
+
+# .next build output
+.next/
+
+# npm package-lock files
+package-lock.json
+
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Production build
+out/
+
+# Vercel deployment output
+.vercel/
+
+# Local environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# MacOS system files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# IDE and editor-specific files
+.idea/
+
+# Log files
+*.log
+
+# Coverage directory from testing
+coverage/
+
+# JetBrains IDE project files
+.idea/
+
+# Build directory for static site generation
+public/_next/
