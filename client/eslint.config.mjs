@@ -1,6 +1,10 @@
+import { FlatCompat } from "@eslint/eslintrc";
+import typescriptPlugin from "@typescript-eslint/eslint-plugin";
+import typescriptParserPlugin from "@typescript-eslint/parser";
+import importPlugin from "eslint-plugin-import";
+import prettierPlugin from "eslint-plugin-prettier";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,6 +15,52 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    plugins: {
+      typescript: typescriptPlugin,
+      typescriptParser: typescriptParserPlugin,
+      prettier: prettierPlugin,
+      import: importPlugin,
+    },
+    rules: {
+      complexity: ["error", 2],
+
+      "import/order": [
+        "error",
+        {
+          "newlines-between": "always",
+          groups: [
+            ["builtin", "external"],
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+          ],
+          pathGroups: [
+            {
+              pattern:
+                "{@components,@utils,@constants,@hooks,@styles,@actions,@public,@api,@store,@context}{,/**}",
+              group: "internal",
+            },
+          ],
+          pathGroupsExcludedImportTypes: ["builtin"],
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
+          warnOnUnassignedImports: true,
+        },
+      ],
+    },
+  },
+
+  {
+    name: "complexity/components",
+    files: ["**/*.tsx", "**/*.jsx"],
+    rules: {
+      complexity: ["error", 5],
+    },
+  },
 ];
 
 export default eslintConfig;
