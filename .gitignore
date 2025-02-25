@@ -11,8 +11,3 @@ Thumbs.db
 # Ignore build directories
 dist/
 build/
-
-# Ignore Husky configuration if you don't want to include it in version control
-.husky/
-
-# Other root-level ignore rules
