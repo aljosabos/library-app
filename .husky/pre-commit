@@ -1,3 +1,3 @@
-(cd server && npm run lint && tsc --noEmit) &
-(cd client && npm run lint && tsc --noEmit) &
+cd server && npm run lint && tsc --noEmit
+cd ../client && npm run lint && tsc --noEmit
 
