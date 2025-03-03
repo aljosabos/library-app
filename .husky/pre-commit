@@ -1,3 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+set -e # Exit immediately if any command fails
+
 cd server && npm run lint && tsc --noEmit
 cd ../client && npm run lint && tsc --noEmit
 
