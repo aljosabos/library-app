@@ -5,27 +5,25 @@ import { StatusCodes } from "http-status-codes";
 
 import "../db/connect";
 import { connectDB } from "../db/connect";
-import { testValidator } from "../middleware/validationMiddleware";
-import { userRoutes } from "../routes/user";
+import { authRoutes } from "../routes/authRoutes";
+import userRoutes from "../routes/userRoutes";
 import { CustomError } from "../types";
 
+dotenv.config();
 const app = express();
 
 app.use(express.json());
-dotenv.config();
 
-//routes
+// Routes
 app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 
-app.post("/test", ...testValidator, (req: Request, res: Response) => {
-  const { name } = req.body;
-  res.json({ message: `Hello ${name}` });
-});
-
+// 404 Handler
 app.all("*", (req: Request, res: Response) => {
   res.status(404).send("Route does not exist");
 });
 
+// Global Error Handler
 app.use((err: CustomError, req: Request, res: Response) => {
   console.log(err);
 
