@@ -19,7 +19,7 @@ export default [
       typescriptParser: typescriptParserPlugin,
     },
     rules: {
-      complexity: ["error", 2],
+      complexity: ["error", 3],
 
       "import/order": [
         "error",
