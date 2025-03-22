@@ -2,7 +2,7 @@ import { SearchBook } from "@features/SearchBook/SearchBook";
 
 const SearchPage = async () => {
   return (
-    <div className="max-w-[50%] mx-auto my-6">
+    <div className="mx-auto my-6 max-w-[50%]">
       <SearchBook />
     </div>
   );

@@ -1,5 +1,11 @@
+import { Dashboard } from "@features/Dashboard/Dashboard";
+
 const Home = () => {
-  return <div>This is home page</div>;
+  return (
+    <div>
+      <Dashboard />
+    </div>
+  );
 };
 
 export default Home;
