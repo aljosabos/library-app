@@ -15,7 +15,6 @@ import Slide4 from "@images/slides/slide-4.jpg";
 export const Slider = () => {
   return (
     <Swiper
-      // className="h-[700px]"
       spaceBetween={50}
       slidesPerView={1}
       onSlideChange={() => console.log("slide change")}
