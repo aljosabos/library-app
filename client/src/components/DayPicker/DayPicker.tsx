@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayPicker, getDefaultClassNames, UI } from "react-day-picker";
+import { ClassNames } from "react-day-picker";
 import "react-day-picker/style.css";
 
+import { getClass, getClasses } from "./DayPicker.helpers";
 import "./DayPicker.scss";
 
-export const DatePicker = () => {
+interface IDayPickerProps {
+  classes?: Partial<ClassNames>;
+}
+
+export const DatePicker = ({ classes }: IDayPickerProps) => {
   const [selected] = useState<Date>();
 
   const defaultClasses = getDefaultClassNames();
@@ -19,10 +25,19 @@ export const DatePicker = () => {
         selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
       }
       classNames={{
-        day: "text-lg border-0",
-        day_button: `${defaultClasses.day_button} !rounded-none`,
-        selected: `${defaultClasses.selected}`,
+        day: getClasses(
+          defaultClasses.day,
+          getClass(classes, UI.Day),
+          "border-0",
+        ),
+        day_button: getClasses(
+          defaultClasses.day_button,
+          getClass(classes, UI.DayButton),
+          "!rounded-none",
+        ),
+        selected: getClasses(defaultClasses.selected, classes?.selected),
         chevron: `${defaultClasses.chevron} !fill-black`,
+
         weekday: `${defaultClasses.weekday} !text-base`,
         month_caption: `${defaultClasses.month_caption} !px-4`,
       }}

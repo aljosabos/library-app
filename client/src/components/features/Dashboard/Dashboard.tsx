@@ -11,10 +11,10 @@ export const Dashboard = () => {
       <NavigationMenu />
       <div className="mx-auto my-8">
         <Slider />
-        <div className="grid grid-cols-[3fr_1fr] gap-4 p-8">
+        <div className="grid gap-4 p-16 lg:grid-cols-[3fr_1fr]">
           <Posts />
-          <div className="sticky top-0 h-screen p-4">
-            <DatePicker />
+          <div className="sticky top-0 flex flex-col items-center p-4 sm:h-auto lg:h-screen">
+            <DatePicker classes={{ day: "sm:p-4 lg:p-0" }} />
             <Events />
           </div>
         </div>
