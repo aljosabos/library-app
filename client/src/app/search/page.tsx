@@ -1,4 +1,4 @@
-import { SearchBook } from "@features/SearchBook/SearchBook";
+import { SearchBook } from "@components/features/SearchBook/SearchBook";
 
 const SearchPage = async () => {
   return (

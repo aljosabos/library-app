@@ -1,4 +1,4 @@
-import { Dashboard } from "@features/Dashboard/Dashboard";
+import { Dashboard } from "@components/features/Dashboard/Dashboard";
 
 const Home = () => {
   return (
