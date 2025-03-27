@@ -18,9 +18,11 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@features/*": ["./src/components/features/*"],
       "@components/*": ["./src/components/*"],
+      "@images/*": ["./src/images/*"],
       "@/*": ["./src/*"]
     }
   },

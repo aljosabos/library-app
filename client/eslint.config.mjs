@@ -39,7 +39,7 @@ const eslintConfig = [
           pathGroups: [
             {
               pattern:
-                "{@components,@utils,@constants,@hooks,@styles,@actions,@public,@api,@store,@context}{,/**}",
+                "{@components,@features,@utils,@constants,@hooks,@styles,@actions,@public,@api,@store,@context}{,/**}",
               group: "internal",
             },
           ],
