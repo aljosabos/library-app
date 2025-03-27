@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DayPicker, getDefaultClassNames, UI } from "react-day-picker";
+import { DayPicker, UI, getDefaultClassNames } from "react-day-picker";
 import { ClassNames } from "react-day-picker";
 import "react-day-picker/style.css";
 
@@ -36,10 +36,9 @@ export const DatePicker = ({ classes }: IDayPickerProps) => {
           "!rounded-none",
         ),
         selected: getClasses(defaultClasses.selected, classes?.selected),
-        chevron: `${defaultClasses.chevron} !fill-black`,
-
-        weekday: `${defaultClasses.weekday} !text-base`,
-        month_caption: `${defaultClasses.month_caption} !px-4`,
+        chevron: getClasses(defaultClasses.chevron, "!fill-black"),
+        weekday: getClasses(defaultClasses.weekday, "!text-base"),
+        month_caption: getClasses(defaultClasses.month_caption, "!px-4"),
       }}
     />
   );
