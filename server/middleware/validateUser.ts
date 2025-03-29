@@ -6,8 +6,6 @@ import { User } from "../models/user";
 
 import { validator } from "./validator";
 
-
-
 export const updateUserValidator = validator([
   body("name")
     .optional()
@@ -26,21 +24,18 @@ export const updateUserValidator = validator([
 ]);
 
 /**
- * This middleware is used to validate the id parameter of the request.
- *
+ * Validates a user ID parameter
+ * 1. Checking if it's a valid MongoDB ObjectID
+ * 2. Checks wheather a user with such ID exists
  */
-export const validateIdParam = validator([
+export const validateUserIdParam = validator([
   param("id").custom(async (idParam) => {
-    handleIdParamValidation(idParam);
+    const isValidId = mongoose.Types.ObjectId.isValid(idParam);
 
-    const job = await User.findById(idParam);
+    if (!isValidId) throw new BadRequestError(`Invalid MongoDB ${idParam}`);
 
-    if (!job) throw new NotFoundError(`No job with id ${idParam}`);
+    const user = await User.findById(idParam);
+
+    if (!user) throw new NotFoundError(`No book with id ${idParam}`);
   }),
 ]);
-
-const handleIdParamValidation = (id: string) => {
-  const isValidId = mongoose.Types.ObjectId.isValid(id);
-
-  if (!isValidId) throw new BadRequestError(`Invalid MongoDB ${id}`);
-};

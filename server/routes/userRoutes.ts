@@ -8,7 +8,7 @@ import {
 } from "../controllers/userController";
 import {
   updateUserValidator,
-  validateIdParam,
+  validateUserIdParam,
 } from "../middleware/validateUser";
 
 const router = Router();
@@ -17,8 +17,8 @@ router.route("/").get(getAllUsers);
 
 router
   .route("/:id")
-  .get(...validateIdParam, getUser)
-  .patch(...updateUserValidator, ...validateIdParam, updateUser)
-  .delete(...validateIdParam, deleteUser);
+  .get(...validateUserIdParam, getUser)
+  .patch(...updateUserValidator, ...validateUserIdParam, updateUser)
+  .delete(...validateUserIdParam, deleteUser);
 
-export default router;
+export { router as userRoutes };

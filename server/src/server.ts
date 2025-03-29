@@ -8,7 +8,8 @@ import "../db/connect";
 import { connectDB } from "../db/connect";
 import { authenticateUser } from "../middleware/authMiddleware";
 import { authRoutes } from "../routes/authRoutes";
-import userRoutes from "../routes/userRoutes";
+import { bookRoutes } from "../routes/bookRoutes";
+import { userRoutes } from "../routes/userRoutes";
 import { CustomError } from "../types";
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(express.json());
 // Routes
 app.use("/users", authenticateUser, userRoutes);
 app.use("/auth", authRoutes);
+app.use("/books", bookRoutes);
 
 // 404 Handler
 app.all("*", (req: Request, res: Response) => {
