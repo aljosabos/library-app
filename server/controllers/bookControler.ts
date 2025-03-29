@@ -7,14 +7,14 @@ import { populateBooks } from "../utils/booksUtils";
 export const getAllBooks = async (req: Request, res: Response) => {
   try {
     let books = await Book.find({});
-    // if no books find, populate the db with fake books
+    // if no books are found, populate the db with fake books
     if (books.length === 0) {
       const populatedBooks = populateBooks();
       books = await Book.insertMany(populatedBooks);
     }
     res.status(StatusCodes.OK).json({ books, count: books.length });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: error });
   }
 };
 

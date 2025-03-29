@@ -8,7 +8,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const users = await User.find({});
     res.status(StatusCodes.OK).json({ users });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: error });
   }
 };
 
