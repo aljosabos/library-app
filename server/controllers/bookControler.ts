@@ -4,10 +4,15 @@ import { StatusCodes } from "http-status-codes";
 import { Book } from "../models/book";
 import { populateBooks } from "../utils/booksUtils";
 
+/**
+ * Retrieves all books from the database.
+ * If no books are found, it populates the database with mock books and returns them.
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const getAllBooks = async (req: Request, res: Response) => {
   try {
     let books = await Book.find({});
-    // if no books are found, populate the db with fake books
     if (books.length === 0) {
       const populatedBooks = populateBooks();
       books = await Book.insertMany(populatedBooks);

@@ -17,7 +17,7 @@ const Configuration = {
     "type-enum": [
       2,
       "always",
-      ["chore", "fix", "refactor", "test", "style", "feat"],
+      ["chore", "fix", "refactor", "test", "style", "feat", "docs"],
     ],
 
     "subject-case": [2, "always", ["sentence-case"]],

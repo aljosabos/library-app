@@ -2,6 +2,11 @@ import { faker } from "@faker-js/faker";
 
 import { bookGenres } from "../src/constants/bookConstants";
 
+/**
+ * Generates a list of mock books with random attributes.
+ * @param count number of generated book items
+ * @returns book items
+ */
 export const populateBooks = (count = 100) => {
   return Array.from({ length: count }, () => {
     const title = faker.book.title();
@@ -20,6 +25,13 @@ export const populateBooks = (count = 100) => {
   });
 };
 
+/**
+ * Generates a human-readable book description instead of a lorem ipsum paragraph.
+ * @param title string
+ * @param author string
+ * @param genre one of the genres found in bookGenres array
+ * @returns book description
+ */
 const generateBookDescription = (
   title: string,
   author: string,
@@ -28,6 +40,7 @@ const generateBookDescription = (
   const plot = faker.lorem.sentence();
   const setting =
     faker.location.city() + ", " + faker.date.past().getFullYear();
+
   const theme = faker.helpers.arrayElement([
     "a journey of self-discovery",
     "a tale of love and betrayal",
