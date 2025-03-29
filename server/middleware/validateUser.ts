@@ -6,8 +6,6 @@ import { User } from "../models/user";
 
 import { validator } from "./validator";
 
-
-
 export const updateUserValidator = validator([
   body("name")
     .optional()
@@ -31,16 +29,12 @@ export const updateUserValidator = validator([
  */
 export const validateIdParam = validator([
   param("id").custom(async (idParam) => {
-    handleIdParamValidation(idParam);
+    const isValidId = mongoose.Types.ObjectId.isValid(idParam);
+
+    if (!isValidId) throw new BadRequestError(`Invalid MongoDB ${idParam}`);
 
     const job = await User.findById(idParam);
 
     if (!job) throw new NotFoundError(`No job with id ${idParam}`);
   }),
 ]);
-
-const handleIdParamValidation = (id: string) => {
-  const isValidId = mongoose.Types.ObjectId.isValid(id);
-
-  if (!isValidId) throw new BadRequestError(`Invalid MongoDB ${id}`);
-};

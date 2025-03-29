@@ -21,4 +21,4 @@ router
   .patch(...updateUserValidator, ...validateIdParam, updateUser)
   .delete(...validateIdParam, deleteUser);
 
-export default router;
+export { router as userRoutes };
