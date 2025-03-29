@@ -12,24 +12,34 @@ export const getAllBooks = async (req: Request, res: Response) => {
       const populatedBooks = populateBooks();
       books = await Book.insertMany(populatedBooks);
     }
-    res.status(StatusCodes.OK).json({ books });
+    res.status(StatusCodes.OK).json({ books, count: books.length });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
 };
 
 export const getBook = async (req: Request, res: Response) => {
-  res.send("single books");
+  const book = await Book.findById({ _id: req.params.id });
+
+  res.status(StatusCodes.OK).json({ book });
 };
 
 export const createBook = async (req: Request, res: Response) => {
-  res.send("create book");
+  const book = await Book.create(req.body);
+
+  res.status(StatusCodes.CREATED).json({ book });
 };
 
 export const updateBook = async (req: Request, res: Response) => {
-  res.send("update book");
+  const book = await Book.findByIdAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+  });
+
+  res.status(StatusCodes.OK).json({ book });
 };
 
 export const deleteBook = async (req: Request, res: Response) => {
-  res.send("delete book");
+  const book = await Book.findOneAndDelete({ _id: req.params.id });
+
+  res.status(StatusCodes.OK).json({ book });
 };

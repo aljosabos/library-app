@@ -13,9 +13,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: Request, res: Response) => {
-  const user = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-    new: true,
-  });
+  const user = await User.findById({ _id: req.params.id });
 
   res.status(StatusCodes.OK).json({ user });
 };
@@ -25,7 +23,7 @@ export const updateUser = async (req: Request, res: Response) => {
     new: true,
   });
 
-  res.status(200).json({ user });
+  res.status(StatusCodes.OK).json({ user });
 };
 
 export const deleteUser = async (req: Request, res: Response) => {

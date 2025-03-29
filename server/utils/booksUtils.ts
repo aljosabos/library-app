@@ -13,7 +13,7 @@ export const populateBooks = (count = 100) => {
       title: title,
       author: author,
       genre: genre,
-      publishedYear: faker.number.int({ min: 1900, max: 2024 }),
+      publishedYear: faker.number.int({ min: 1800, max: 2025 }),
       isbn: faker.commerce.isbn(),
       description: generateBookDescription(title, author, genre),
     };
