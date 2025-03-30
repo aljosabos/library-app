@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { IBook } from "@/api/books/getAll";
+import { getAllBooksAction } from "@/app/actions/bookActions/getAll";
 import {
   Select,
   SelectContent,
@@ -20,16 +23,29 @@ import {
   FormMessage,
 } from "@components/ui/form";
 import { Input } from "@components/ui/input";
+import { Book } from "@features/Book/Book";
+
+type ISearchBookParams = {
+  search?: string;
+  filter: "title" | "author";
+};
+
+const emptyArr: IBook[] = [];
 
 export const SearchBook = () => {
-  const form = useForm({
+  const [books, setBooks] = useState<IBook[]>(emptyArr);
+  const form = useForm<ISearchBookParams>({
     defaultValues: {
       filter: "title",
       search: "",
     },
   });
 
-  const handleFormSubmit = () => console.log("submit");
+  const handleFormSubmit = async (fields: ISearchBookParams) => {
+    const data = await getAllBooksAction(fields);
+
+    if (data?.books) setBooks(data?.books);
+  };
 
   return (
     <div>
@@ -85,7 +101,11 @@ export const SearchBook = () => {
         </form>
       </Form>
 
-      <div className="mt-6 h-auto border border-gray-100"></div>
+      <div className="mt-6 h-auto">
+        {books?.map((book, idx) => (
+          <Book {...book} key={book._id} index={idx + 1} />
+        ))}
+      </div>
     </div>
   );
 };

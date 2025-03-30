@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { FilterQuery } from "mongoose";
 
-import { bookGenres } from "@constants/bookConstants";
-
+import { bookGenres } from "../src/constants/bookConstants";
 import { ISearchBookParams } from "../types";
 
 /**

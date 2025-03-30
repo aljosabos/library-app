@@ -8,7 +8,7 @@ import {
 } from "./Typography.constants";
 
 export interface TypographyProps extends TypographyVariantProps {
-  tag?: TypographyVariantProps["variant"];
+  variant?: TypographyVariantProps["variant"];
   className?: string;
   as?: React.ElementType;
   children: ReactNode;
