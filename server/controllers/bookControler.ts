@@ -2,20 +2,33 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { Book } from "../models/book";
-import { populateBooks } from "../utils/booksUtils";
+import { ISearchBookParams } from "../types";
+import { getBookSearchObj, generateMockBooks } from "../utils/booksUtils";
 
 /**
- * Retrieves all books from the database.
+ * Retrieves books from the DB.
  * If no books are found, it populates the database with mock books and returns them.
  * @param req - The request object.
  * @param res - The response object.
  */
-export const getAllBooks = async (req: Request, res: Response) => {
+export const getAllBooks = async (
+  req: Request<unknown, unknown, unknown, ISearchBookParams>,
+  res: Response
+) => {
   try {
-    let books = await Book.find({});
-    if (books.length === 0) {
-      const populatedBooks = populateBooks();
-      books = await Book.insertMany(populatedBooks);
+    let books;
+
+    const hasBooks = (await Book.countDocuments()) > 0;
+
+    if (!hasBooks) {
+      const mockBooks = generateMockBooks();
+      books = await Book.insertMany(mockBooks);
+    } else {
+      const { filter, search } = req.query;
+
+      const searchObj = getBookSearchObj(filter, search);
+
+      books = await Book.find(searchObj);
     }
     res.status(StatusCodes.OK).json({ books, count: books.length });
   } catch (error) {

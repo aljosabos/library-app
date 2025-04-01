@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 
 export const NavigationMenu = () => {
@@ -10,7 +12,11 @@ export const NavigationMenu = () => {
         <MenubarTrigger className="px-8 uppercase">About</MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger className="px-8 uppercase">Search Book</MenubarTrigger>
+        <MenubarTrigger className="px-8 uppercase">
+          <Link href="/search" className="text-inherit no-underline">
+            Search Book
+          </Link>
+        </MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger className="px-8 uppercase">Login</MenubarTrigger>

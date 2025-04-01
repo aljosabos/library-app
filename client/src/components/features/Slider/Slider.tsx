@@ -18,7 +18,6 @@ export const Slider = () => {
       spaceBetween={50}
       slidesPerView={1}
       onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
       modules={[Pagination, Autoplay, Navigation]}
       pagination={{
         dynamicBullets: true,

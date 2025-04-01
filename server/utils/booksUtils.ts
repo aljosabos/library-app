@@ -1,13 +1,15 @@
 import { faker } from "@faker-js/faker";
+import { FilterQuery } from "mongoose";
 
 import { bookGenres } from "../src/constants/bookConstants";
+import { ISearchBookParams } from "../types";
 
 /**
  * Generates a list of mock books with random attributes.
  * @param count number of generated book items
  * @returns book items
  */
-export const populateBooks = (count = 100) => {
+export const generateMockBooks = (count = 100) => {
   return Array.from({ length: count }, () => {
     const title = faker.book.title();
     const author = faker.person.firstName() + " " + faker.person.lastName();
@@ -72,4 +74,30 @@ const generateBookDescription = (
       "touch your heart",
     ])}.`
   );
+};
+
+/**
+ * Constructs search object for DB search
+ * @param filter string
+ * @param search string | undefined
+ * @returns
+ */
+export const getBookSearchObj = (
+  filter: string,
+  search: string | undefined
+): FilterQuery<ISearchBookParams> => {
+  const obj: FilterQuery<ISearchBookParams> = {};
+
+  if (search) {
+    obj.$or = [
+      {
+        [filter]: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  return obj;
 };
