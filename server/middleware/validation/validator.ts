@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ValidationChain, validationResult } from "express-validator";
 
-import { BadRequestError, NotFoundError } from "../errors/customErrors";
+import { BadRequestError, NotFoundError } from "../../errors/customErrors";
 
 /**
  * This validator returns array of:

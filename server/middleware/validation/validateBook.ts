@@ -1,9 +1,9 @@
 import { body, param } from "express-validator";
 import mongoose from "mongoose";
 
-import { BadRequestError, NotFoundError } from "../errors/customErrors";
-import { Book } from "../models/book";
-import { bookGenres } from "../src/constants/bookConstants";
+import { BadRequestError, NotFoundError } from "../../errors/customErrors";
+import { Book } from "../../models/book";
+import { bookGenres } from "../../src/constants/bookConstants";
 
 import { validator } from "./validator";
 

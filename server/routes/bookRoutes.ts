@@ -11,7 +11,7 @@ import {
   createBookValidator,
   updateBookValidator,
   validateBookIdParam,
-} from "../middleware/validateBook";
+} from "../middleware/validation/validateBook";
 
 const router = Router();
 

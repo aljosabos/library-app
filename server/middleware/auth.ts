@@ -4,21 +4,23 @@ import { body } from "express-validator";
 import { UnauthenticatedError } from "../errors/customErrors";
 import { verifyJWT } from "../utils/tokenUtils";
 
-import { validator } from "./validator";
+import { validator } from "./validation/validator";
 
 export const registerUserValidator = validator([
-  body("name")
+  body("email")
     .trim()
     .notEmpty()
-    .withMessage("name is required")
-    .isLength({ min: 3, max: 10 })
-    .withMessage("Name must be between 3 and 10 characters long"),
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Invalid email format")
+    .isLength({ min: 3, max: 50 })
+    .withMessage("Email must be between 3 and 50 characters long"),
   body("password")
     .trim()
     .notEmpty()
     .withMessage("password is required")
-    .isLength({ min: 3, max: 10 })
-    .withMessage("Password must be between 3 and 10 characters long"),
+    .isLength({ min: 3, max: 50 })
+    .withMessage("Password must be between 3 and 50 characters long"),
 ]);
 
 export const authenticateUser = async (
