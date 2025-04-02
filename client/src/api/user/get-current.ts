@@ -1,3 +1,5 @@
+"use server";
+
 export interface ICurrentUserResponse {
   _id: string;
   email: string;
@@ -8,9 +10,9 @@ export const getCurrentUser = async (): Promise<
 > => {
   try {
     const response = await fetch(`${process.env.BASE_URL}/users/current`);
-    const data = await response.json();
+    const { user } = await response.json();
 
-    return data;
+    return user;
   } catch (err) {
     console.log(err);
   }
