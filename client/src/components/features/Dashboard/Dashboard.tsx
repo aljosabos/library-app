@@ -1,3 +1,4 @@
+import { ICurrentUserResponse } from "@/api/user/get-current";
 import { DatePicker } from "@components/DayPicker/DayPicker";
 import { Events } from "@components/features/Events/Events";
 import { Footer } from "@components/features/Footer/Footer";
@@ -5,10 +6,14 @@ import { Posts } from "@components/features/Posts/Posts";
 import { Slider } from "@components/features/Slider/Slider";
 import { NavigationMenu } from "@components/NavigationMenu/NavigationMenu";
 
-export const Dashboard = () => {
+interface IDashboardProps {
+  currentUser?: ICurrentUserResponse;
+}
+
+export const Dashboard = ({ currentUser }: IDashboardProps) => {
   return (
     <div>
-      <NavigationMenu />
+      <NavigationMenu currentUser={currentUser} />
       <div className="mx-auto my-8">
         <Slider />
         <div className="grid gap-4 p-16 lg:grid-cols-[3fr_1fr]">

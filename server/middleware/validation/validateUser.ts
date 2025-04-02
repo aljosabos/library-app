@@ -1,26 +1,28 @@
 import { body, param } from "express-validator";
 import mongoose from "mongoose";
 
-import { BadRequestError, NotFoundError } from "../errors/customErrors";
-import { User } from "../models/user";
+import { BadRequestError, NotFoundError } from "../../errors/customErrors";
+import { User } from "../../models/user";
 
 import { validator } from "./validator";
 
 export const updateUserValidator = validator([
-  body("name")
+  body("email")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("name is required")
-    .isLength({ min: 3, max: 10 })
-    .withMessage("Name must be between 3 and 10 characters long"),
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Invalid email format")
+    .isLength({ min: 3, max: 50 })
+    .withMessage("Email must be between 3 and 50 characters long"),
   body("password")
     .optional()
     .trim()
     .notEmpty()
     .withMessage("password is required")
     .isLength({ min: 3, max: 10 })
-    .withMessage("Password must be between 3 and 10 characters long"),
+    .withMessage("Password must be between 3 and 50 characters long"),
 ]);
 
 /**

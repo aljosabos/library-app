@@ -1,9 +1,13 @@
 import { Dashboard } from "@components/features/Dashboard/Dashboard";
 
-const Home = () => {
+import { getCurrentUserAction } from "./actions/users/getCurrentUserAction";
+
+const Home = async () => {
+  const currentUser = await getCurrentUserAction();
+
   return (
     <div>
-      <Dashboard />
+      <Dashboard currentUser={currentUser} />
     </div>
   );
 };

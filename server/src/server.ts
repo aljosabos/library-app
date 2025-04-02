@@ -6,7 +6,6 @@ import { StatusCodes } from "http-status-codes";
 
 import "../db/connect";
 import { connectDB } from "../db/connect";
-import { authenticateUser } from "../middleware/authMiddleware";
 import { authRoutes } from "../routes/authRoutes";
 import { bookRoutes } from "../routes/bookRoutes";
 import { userRoutes } from "../routes/userRoutes";
@@ -16,9 +15,8 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-
 // Routes
-app.use("/users", authenticateUser, userRoutes);
+app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/books", bookRoutes);
 

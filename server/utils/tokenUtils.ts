@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 interface IUserPayload {
   userId: string;
+  isAdmin: boolean;
 }
 
 export const createJWT = (payload: IUserPayload) => {

@@ -11,13 +11,13 @@ export const registerUser = async (req: Request, res: Response) => {
 
   req.body.password = hashedPassword;
 
-  await User.create(req.body);
+  const user = await User.create({ ...req.body, isAdmin: false });
 
-  res.status(StatusCodes.CREATED).json({ msg: "User created" });
+  res.status(StatusCodes.CREATED).json({ user });
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  const user = await User.findOne({ name: req.body.name });
+  const user = await User.findOne({ email: req.body.email });
 
   if (!user) throw new UnauthenticatedError("Invalid credentials");
 
@@ -28,7 +28,10 @@ export const loginUser = async (req: Request, res: Response) => {
 
   if (!isPasswordCorrect) throw new UnauthenticatedError("Password is wrong");
 
-  const token = createJWT({ userId: user._id.toString() });
+  const token = createJWT({
+    userId: user._id.toString(),
+    isAdmin: user.isAdmin,
+  });
 
   const oneDay = 1000 * 60 * 60 * 24;
 
@@ -39,7 +42,7 @@ export const loginUser = async (req: Request, res: Response) => {
     secure: process.env.NODE_ENV === "production",
   });
 
-  res.status(StatusCodes.OK).json({ msg: "user logged in" });
+  res.status(StatusCodes.OK).json({ user });
 };
 
 export const logout = (req: Request, res: Response) => {
