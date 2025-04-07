@@ -1,22 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 
 import { getCurrentUser } from "@/api/user/get-current";
 import { NavigationMenu } from "@components/NavigationMenu/NavigationMenu";
-
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
+import { geistMono, geistSans } from "@styles/fonts";
+import "@styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Library App",
@@ -33,7 +20,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`${geistSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NavigationMenu currentUser={currentUser} />
         {children}
