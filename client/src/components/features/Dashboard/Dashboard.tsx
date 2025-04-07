@@ -9,7 +9,7 @@ export const Dashboard = () => {
     <div>
       <div className="mx-auto my-8">
         <Slider />
-        <div className="grid gap-4 p-16 lg:grid-cols-[3fr_1fr]">
+        <div className="grid gap-4 p-16 lg:grid-cols-[4fr_2fr]">
           <Posts />
           <div className="sticky top-0 flex flex-col items-center p-4 sm:h-auto lg:h-screen">
             <DatePicker classes={{ day: "sm:p-4 lg:p-0" }} />
