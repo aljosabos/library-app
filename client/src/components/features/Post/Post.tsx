@@ -16,7 +16,7 @@ export const Post = () => {
           architecto. Dignissimos!
         </Typography>
         <Button
-          className="color-white w-min bg-sky-700/75 font-bold text-white"
+          className="color-white w-min bg-cyan-600 font-bold text-white"
           variant="outline"
         >
           More Details
