@@ -16,15 +16,20 @@ export const Post = () => {
           architecto. Dignissimos!
         </Typography>
         <Button
-          className="color-white w-full bg-[#7c6853] font-bold uppercase text-white"
+          className="color-white w-min bg-cyan-600 font-bold text-white"
           variant="outline"
-          size="lg"
         >
           More Details
         </Button>
       </div>
-      <div className="relative h-[180px] w-full flex-[1]">
-        <Image src={Image1} alt="img" fill className="object-cover px-4" />
+      <div className="relative w-full flex-1 pr-4">
+        <Image
+          src={Image1}
+          alt="post_img"
+          height={200}
+          width={300}
+          className="block rounded-md"
+        />
       </div>
     </div>
   );

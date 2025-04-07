@@ -23,6 +23,7 @@
       "@features/*": ["./src/components/features/*"],
       "@components/*": ["./src/components/*"],
       "@images/*": ["./src/images/*"],
+      "@styles/*": ["./src/app/styles/*"],
       "@/*": ["./src/*"]
     }
   },
