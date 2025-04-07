@@ -75,6 +75,7 @@ export const AuthForm = () => {
                       placeholder="Password"
                       {...field}
                       autoComplete="off"
+                      type="password"
                     />
                   </FormControl>
                   <FormMessage>{error}</FormMessage>
