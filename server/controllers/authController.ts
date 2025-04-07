@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { UnauthenticatedError } from "../errors/customErrors";
 import { User } from "../models/user";
 import { comparePasswords, hashPassword } from "../utils/passwordUtils";
 import { createJWT } from "../utils/tokenUtils";
@@ -19,26 +18,33 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   const user = await User.findOne({ email: req.body.email });
 
-  if (!user) throw new UnauthenticatedError("Invalid credentials");
+  if (!user) {
+    res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid credentials" });
+    return;
+  }
 
   const isPasswordCorrect = await comparePasswords(
     req.body.password,
     user.password!
   );
 
-  if (!isPasswordCorrect) throw new UnauthenticatedError("Password is wrong");
+  if (!isPasswordCorrect) {
+    res.status(StatusCodes.BAD_REQUEST).json({ error: "Password is wrong" });
+    return;
+  }
 
   const token = createJWT({
     userId: user._id.toString(),
     isAdmin: user.isAdmin,
   });
 
-  const oneDay = 1000 * 60 * 60 * 24;
+  const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
 
   // add cookie
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
+    // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     secure: process.env.NODE_ENV === "production",
   });
 
@@ -46,6 +52,7 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
+  console.log("LOGOUT BACKEND");
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),

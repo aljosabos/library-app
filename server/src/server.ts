@@ -1,4 +1,5 @@
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import "express-async-errors";
@@ -13,8 +14,17 @@ import { CustomError } from "../types";
 
 dotenv.config();
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:3015",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
+
 app.use(express.json());
+
 // Routes
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);

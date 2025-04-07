@@ -23,19 +23,20 @@ export const registerUserValidator = validator([
     .withMessage("Password must be between 3 and 50 characters long"),
 ]);
 
-export const authenticateUser = async (
+export const authenticateUser = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { token } = req.cookies;
+  if (!token) throw new UnauthenticatedError("authentication invalid");
 
   try {
-    const { userId } = verifyJWT(token);
-    req.user = { userId };
+    const { userId, isAdmin } = verifyJWT(token);
+    req.user = { userId, isAdmin };
     next();
-  } catch (err) {
-    console.log(err);
-    if (!token) throw new UnauthenticatedError("Authentication invalid");
+  } catch (error) {
+    console.log(error);
+    throw new UnauthenticatedError("authentication invalid");
   }
 };

@@ -5,6 +5,7 @@ declare module "express" {
   interface Request {
     user?: {
       userId: string;
+      isAdmin: boolean;
     };
   }
 }
