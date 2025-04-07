@@ -1,6 +1,12 @@
 /**
- * This function logout the user by clearing cookie. It must be converted to regular API function since the server actions do not have access to the browser and cookies. It must also include credentials: 'include'
- * @returns {success: boolean}
+ * Logs out the user by calling the logout API and clearing cookies on the server.
+ *
+ * Note: This function must be used in a client-side context (e.g. inside useEffect or event handlers),
+ * as server actions do not have access to browser cookies.
+ *
+ * The `credentials: 'include'` option is required to ensure cookies (e.g., session tokens) are sent with the request.
+ *
+ * @returns An object indicating whether the logout was successful.
  */
 
 export const logoutUser = async (): Promise<{ success: boolean }> => {
