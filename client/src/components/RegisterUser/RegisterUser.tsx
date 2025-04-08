@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { loginUser } from "@/api/auth/login";
 import { revalidate } from "@actions/route/revalidate";
+import { registerUser } from "@api/auth/register";
 import { Typography } from "@components/Typography/Typography";
 import { Button } from "@components/ui/button";
 import {
@@ -34,7 +34,7 @@ export const RegisterUser = () => {
   });
 
   const handleFormSubmit: SubmitHandler<TRegisterData> = async (data) => {
-    const response = await loginUser(data);
+    const response = await registerUser(data);
 
     if (response.success) {
       revalidate("/");
