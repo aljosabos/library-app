@@ -25,7 +25,7 @@ export const getAllBooks = async (
   try {
     const queryParams = addQueryParams(params);
     const response = await fetch(
-      `${process.env.BASE_URL}/books?${queryParams}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/books?${queryParams}`,
     );
     const data = await response.json();
 

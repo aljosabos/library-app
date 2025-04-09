@@ -6,6 +6,17 @@ import { comparePasswords, hashPassword } from "../utils/passwordUtils";
 import { createJWT } from "../utils/tokenUtils";
 
 export const registerUser = async (req: Request, res: Response) => {
+  const email = req.body.email;
+
+  const foundUser = await User.findOne({ email });
+
+  if (foundUser) {
+    res
+      .status(StatusCodes.FORBIDDEN)
+      .json({ error: "User with this email already exists" });
+    return;
+  }
+
   const hashedPassword = await hashPassword(req.body.password);
 
   req.body.password = hashedPassword;

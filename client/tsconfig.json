@@ -24,6 +24,8 @@
       "@components/*": ["./src/components/*"],
       "@images/*": ["./src/images/*"],
       "@styles/*": ["./src/app/styles/*"],
+      "@actions/*": ["./src/app/actions/*"],
+      "@api/*": ["src/api/*"],
       "@/*": ["./src/*"]
     }
   },
