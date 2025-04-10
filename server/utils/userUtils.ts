@@ -52,3 +52,9 @@ export const handleReturnCurrentUser = async (token: string, res: Response): Pro
     res.status(StatusCodes.OK).json({ user: null });
   }
 };
+
+
+export const populateDefaultUsers = ()  => {
+
+  
+}

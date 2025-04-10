@@ -11,6 +11,7 @@ import { authRoutes } from "../routes/authRoutes";
 import { bookRoutes } from "../routes/bookRoutes";
 import { userRoutes } from "../routes/userRoutes";
 import { CustomError } from "../types";
+import { seedUsers } from "../utils/seed";
 
 dotenv.config();
 const app = express();
@@ -49,6 +50,8 @@ app.use((err: CustomError, req: Request, res: Response) => {
 const start = async () => {
   try {
     await connectDB();
+    await seedUsers();
+
     const port = process.env.PORT;
     app.listen(port, () => {
       console.log(`Server is listening on the port ${port}...`);
