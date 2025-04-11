@@ -35,7 +35,10 @@ export const getUserWithoutPassword = (user: Document) => user?.toJSON();
  * @param res Response
  * @returns Promise<void>
  */
-export const handleReturnCurrentUser = async (token: string, res: Response): Promise<void> => {
+export const handleReturnCurrentUser = async (
+  token: string,
+  res: Response
+): Promise<void> => {
   try {
     const { userId } = verifyJWT(token);
     const user = await User.findById(userId);
