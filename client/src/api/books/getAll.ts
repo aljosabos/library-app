@@ -27,7 +27,7 @@ export const getAllBooks = async (
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/books?${queryParams}`,
     );
-    const data = await response.json();
+    const data: IGetAllBooksResponse | undefined = await response.json();
 
     return data;
   } catch (err) {
