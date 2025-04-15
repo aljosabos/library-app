@@ -1,7 +1,9 @@
 "use client";
 
+import { CircleArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -14,6 +16,7 @@ import {
 import { getAllBooksAction } from "@actions/bookActions/getAll";
 import { IBook } from "@api/books/getAll";
 import { getUser, IUser } from "@api/user/get";
+import { updateUser } from "@api/user/update";
 import { Typography } from "@components/Typography/Typography";
 import { Button } from "@components/ui/button";
 import {
@@ -33,8 +36,9 @@ export const ProfileDetails = () => {
 
   const [user, setUser] = useState<IUser>();
   const [allBooks, setAllBooks] = useState<IBook[]>([]);
-  const [userBooks, setUserBooks] = useState<IBook[]>([]);
   const [selectedBookID, setSelectedBookID] = useState<string>("");
+
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<IUser & { password: string }>({
     defaultValues: {
@@ -44,6 +48,8 @@ export const ProfileDetails = () => {
       books: [],
     },
   });
+
+  const userBooks = form.watch("books");
 
   // Fetch data
   useEffect(() => {
@@ -70,7 +76,7 @@ export const ProfileDetails = () => {
 
         // admins do not have books, need for check
         if (userData.books) {
-          setUserBooks(userData.books);
+          form.setValue("books", userData.books);
         }
       }
     };
@@ -91,142 +97,160 @@ export const ProfileDetails = () => {
 
     const book = allBooks.find((book) => book._id === bookId);
     if (book) {
-      setUserBooks((current) => [...current, book]);
+      const updatedBooks = [...userBooks, book];
+      form.setValue("books", updatedBooks);
+
       setSelectedBookID("");
     }
   };
 
   const handleRemoveBook = (bookId?: string) => {
     if (!bookId) return;
-    setUserBooks((current) => current.filter((book) => book._id !== bookId));
+    const filteredBooks = userBooks.filter((book) => book._id !== bookId);
+
+    form.setValue("books", filteredBooks);
   };
 
-  const handleFormSubmit = () => console.log("submit");
+  const handleFormSubmit = async (values: IUser & { password?: string }) => {
+    startTransition(async () => {
+      await updateUser(values, id);
+    });
+  };
 
   return (
-    <div className="flex gap-4">
-      <div className="min-w-[600px] rounded-md border p-6">
-        <Typography variant="h1" className="mb-4">
-          {user?.email}
-        </Typography>
-        <Form {...form}>
-          <form
-            className="flex flex-col gap-6"
-            onSubmit={form.handleSubmit(handleFormSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email" {...field} autoComplete="off" />
-                  </FormControl>
+    <div>
+      <Link
+        href="/profile"
+        className="mb-4 flex w-min items-center gap-2 whitespace-nowrap rounded-lg p-2 text-inherit hover:bg-stone-100"
+      >
+        <CircleArrowLeft width={35} height={35} />
+        Return to dashboard
+      </Link>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Change password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="New password"
-                      {...field}
-                      autoComplete="off"
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="isAdmin"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <Select
-                    value={Boolean(field.value) ? "admin" : "user"}
-                    disabled
-                  >
+      <div className="wrap flex gap-4">
+        <div className="min-w-[600px] rounded-md border p-6">
+          <Typography variant="h1" className="mb-4">
+            {user?.email}
+          </Typography>
+          <Form {...form}>
+            <form
+              className="flex flex-col gap-6"
+              onSubmit={form.handleSubmit(handleFormSubmit)}
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <SelectTrigger className="min-w-[150px]">
-                        <SelectValue />
-                      </SelectTrigger>
+                      <Input
+                        placeholder="Email"
+                        {...field}
+                        autoComplete="off"
+                      />
                     </FormControl>
 
-                    <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="user">User</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-col gap-4 rounded-md border p-4">
-              <Typography variant="h2">Add Book To User</Typography>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}
-                name="books"
-                render={() => (
+                name="password"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Books</FormLabel>
+                    <FormLabel>Change password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="New password"
+                        {...field}
+                        autoComplete="off"
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="isAdmin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role</FormLabel>
                     <Select
-                      onValueChange={(value) => {
-                        setSelectedBookID(value);
-                      }}
-                      value={selectedBookID}
+                      value={Boolean(field.value) ? "admin" : "user"}
+                      disabled
                     >
                       <FormControl>
                         <SelectTrigger className="min-w-[150px]">
-                          <SelectValue placeholder="Select book" />
+                          <SelectValue />
                         </SelectTrigger>
                       </FormControl>
+
                       <SelectContent>
-                        {availableBooks.map((book) => (
-                          <SelectItem key={book._id} value={book._id}>
-                            {book.title} by {book.author}
-                          </SelectItem>
-                        ))}
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="user">User</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <div className="flex flex-col gap-4 rounded-md border p-4">
+                <Typography variant="h2">Add Book To User</Typography>
 
-              <Button
-                type="button"
-                className="w-min"
-                onClick={() => handleAddBook(selectedBookID)}
-              >
-                Add book
+                <div>
+                  <FormLabel>Books</FormLabel>
+                  <Select
+                    disabled={!!user?.isAdmin}
+                    onValueChange={(value) => {
+                      setSelectedBookID(value);
+                    }}
+                    value={selectedBookID}
+                  >
+                    <SelectTrigger className="min-w-[150px]">
+                      <SelectValue placeholder="Select book" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {availableBooks.map((book) => (
+                        <SelectItem key={book._id} value={book._id}>
+                          {book.title} by {book.author}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Button
+                  type="button"
+                  disabled={!selectedBookID}
+                  className="w-min"
+                  onClick={() => handleAddBook(selectedBookID)}
+                >
+                  Add book
+                </Button>
+              </div>
+
+              <Button size="lg" disabled={isPending}>
+                Save User Changes
               </Button>
-            </div>
-
-            <Button size="lg">Save User Changes</Button>
-          </form>
-        </Form>
-      </div>
-      <div className="max-h-[640px] overflow-auto rounded-md border p-4">
-        <BooksTable
-          books={userBooks}
-          hideId
-          hideDetails
-          className="my-0"
-          onDelete={handleRemoveBook}
-        />
+            </form>
+          </Form>
+        </div>
+        <div className="max-h-[640px] overflow-auto rounded-md border p-4">
+          <BooksTable
+            books={userBooks}
+            hideId
+            hideDetails
+            className="my-0"
+            onDelete={handleRemoveBook}
+          />
+        </div>
       </div>
     </div>
   );
