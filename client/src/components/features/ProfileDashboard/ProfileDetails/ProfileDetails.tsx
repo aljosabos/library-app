@@ -86,7 +86,7 @@ export const ProfileDetails = () => {
 
   const availableBooks = useMemo(() => {
     const books = allBooks?.filter(
-      (b) => !userBooks.some((ub) => ub._id === b._id),
+      (b) => !userBooks?.some((ub) => ub._id === b._id),
     );
 
     return books;
