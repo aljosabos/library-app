@@ -20,7 +20,7 @@ export const UsersTable = ({ users }: IUsersTableProps) => {
   const router = useRouter();
 
   const handleViewDetails = (userId: string) => {
-    router.push(`/profile/${userId}`); // adjust path as needed
+    router.push(`/profile/${userId}`);
   };
 
   return (
