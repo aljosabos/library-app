@@ -1,6 +1,7 @@
 "use client";
 
 import { CircleX, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { IUser } from "@api/user/get-all";
 import {
@@ -16,6 +17,12 @@ interface IUsersTableProps {
   users: IUser[] | undefined;
 }
 export const UsersTable = ({ users }: IUsersTableProps) => {
+  const router = useRouter();
+
+  const handleViewDetails = (userId: string) => {
+    router.push(`/profile/${userId}`);
+  };
+
   return (
     <Table className="my-4">
       <TableHeader className="sticky top-0">
@@ -38,7 +45,7 @@ export const UsersTable = ({ users }: IUsersTableProps) => {
             <TableCell>{user.isAdmin ? "Admin" : "User"}</TableCell>
             <TableCell>
               <div className="flex h-full cursor-pointer items-center justify-center p-2">
-                <Eye width={20} />
+                <Eye width={20} onClick={() => handleViewDetails(user._id)} />
               </div>
             </TableCell>
             <TableCell>
