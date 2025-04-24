@@ -32,8 +32,10 @@ export const authenticateUser = (
   if (!token) throw new UnauthenticatedError("authentication invalid");
 
   try {
-    const { userId, isAdmin } = verifyJWT(token);
-    req.user = { userId, isAdmin };
+    const payload = verifyJWT(token);
+
+    req.user = payload;
+
     next();
   } catch (error) {
     console.log(error);

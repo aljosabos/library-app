@@ -51,13 +51,13 @@ export const ProfileDetails = () => {
 
   const userBooks = form.watch("books");
 
-  // Fetch data
   useEffect(() => {
     if (!id) return;
 
     const fetchData = async () => {
       const [userData, allBooksData] = await Promise.all([
         getUser(id),
+        // Todo: Add way to call endpoint with default filters
         getAllBooksAction({ filter: "title", search: "" }),
       ]);
 

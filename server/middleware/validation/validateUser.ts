@@ -23,6 +23,11 @@ export const updateUserValidator = validator([
     .withMessage("password is required")
     .isLength({ min: 3, max: 10 })
     .withMessage("Password must be between 3 and 50 characters long"),
+  body("newPassword")
+    .optional()
+    .trim()
+    .isLength({ min: 3, max: 10 })
+    .withMessage("New password must be between 3 and 10 characters long"),
 ]);
 
 /**
@@ -38,6 +43,6 @@ export const validateUserIdParam = validator([
 
     const user = await User.findById(idParam);
 
-    if (!user) throw new NotFoundError(`No book with id ${idParam}`);
+    if (!user) throw new NotFoundError(`No user with id ${idParam}`);
   }),
 ]);

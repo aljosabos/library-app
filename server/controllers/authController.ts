@@ -63,7 +63,6 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  console.log("LOGOUT BACKEND");
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),

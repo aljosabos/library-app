@@ -13,7 +13,7 @@ import { getBookSearchObj, generateMockBooks } from "../utils/booksUtils";
  */
 export const getAllBooks = async (
   req: Request<unknown, unknown, unknown, ISearchBookParams>,
-  res: Response
+  res: Response,
 ) => {
   try {
     let books;

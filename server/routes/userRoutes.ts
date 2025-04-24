@@ -25,7 +25,7 @@ router
     authenticateUser,
     ...validateUserIdParam,
     ...updateUserValidator,
-    updateUser
+    updateUser,
   )
   .delete(authenticateUser, ...validateUserIdParam, deleteUser);
 
