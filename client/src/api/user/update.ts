@@ -33,10 +33,6 @@ export const updateUser = async (
 
     console.log(data);
 
-    // if (response.ok) {
-    //   revalidatePath("/profile");
-    // }
-
     if (!response.ok) {
       return {
         success: false,
@@ -56,8 +52,6 @@ export const updateUser = async (
 const getSanitizedData = (
   data: IUser & { password?: string; oldPassword?: string },
 ) => {
-  // const sanitizedBooks = data.books?.map((book) => book._id);
-
   const sanitizedData: Pick<IUser, "email" | "isAdmin"> & {
     password?: string;
     oldPassword?: string;
