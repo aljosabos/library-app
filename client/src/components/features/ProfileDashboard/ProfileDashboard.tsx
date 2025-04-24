@@ -1,24 +1,30 @@
 import { redirect } from "next/navigation";
 
 import { ICurrentUserResponse } from "@/api/user/get-current";
+import { getUser } from "@api/user/get";
 
 import { ProfileDashboardAdmin } from "./ProfileDashboardAdmin/ProfileDashboardAdmin";
+import { ProfileDashboardUser } from "./ProfileDashboardUser/ProfileDashboardUser";
 
 interface IProfileDashboardProps {
   currentUser: ICurrentUserResponse;
 }
 
-export const ProfileDashboard = ({ currentUser }: IProfileDashboardProps) => {
+export const ProfileDashboard = async ({
+  currentUser,
+}: IProfileDashboardProps) => {
   if (!currentUser) {
     redirect("/");
   }
+
+  const user = await getUser(currentUser._id);
 
   return (
     <div>
       {currentUser?.isAdmin ? (
         <ProfileDashboardAdmin />
       ) : (
-        <div>Welcome user</div>
+        <ProfileDashboardUser user={user} />
       )}
     </div>
   );

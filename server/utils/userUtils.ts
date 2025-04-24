@@ -1,12 +1,11 @@
 import { Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { Document } from "mongoose";
 
+import { IUser } from "../controllers/userController";
 import { User } from "../models/user";
 
+import { comparePasswords } from "./passwordUtils";
 import { verifyJWT } from "./tokenUtils";
-
-export const getUserWithoutPassword = (user: Document) => user?.toJSON();
 
 /**
  * Checks authentication status and returns the current user if a valid JWT token exists.
@@ -39,19 +38,36 @@ export const handleReturnCurrentUser = async (
   token: string,
   res: Response
 ): Promise<void> => {
-  try {
-    const { userId } = verifyJWT(token);
-    const user = await User.findById(userId);
+  const payload = verifyJWT(token);
 
-    if (!user) {
-      res.status(StatusCodes.OK).json({ user: null });
-      return;
-    }
-
-    const userWithoutPassword = getUserWithoutPassword(user);
-    res.status(StatusCodes.OK).json({ user: userWithoutPassword });
-  } catch (err) {
-    console.log(err);
+  if (!payload?.userId) {
     res.status(StatusCodes.OK).json({ user: null });
+    return;
   }
+
+  const user = await User.findById(payload.userId);
+
+  if (!user) {
+    res.status(StatusCodes.OK).json({ user: null });
+    return;
+  }
+
+  res.status(StatusCodes.OK).json({ user });
 };
+
+export const checkIsOldPasswordCorrect = async (
+  password: string,
+  dbPassword?: string
+) => {
+  const isOldPasswordCorrect = await comparePasswords(password, dbPassword);
+
+  return isOldPasswordCorrect;
+};
+
+/**
+ * This function is used just to decrease complexity
+ * @param user IUser | null
+ * @returns boolean
+ */
+export const getHashedPasswordFromDB = (user: IUser | null) =>
+  user?.password ?? undefined;

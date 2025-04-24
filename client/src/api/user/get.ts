@@ -22,8 +22,6 @@ export const getUser = async (id: string): Promise<IUser | undefined> => {
     });
     const { user } = await response.json();
 
-    console.log(" GET USER", user);
-
     return user;
   } catch (err) {
     console.log(err);

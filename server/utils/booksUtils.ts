@@ -37,7 +37,7 @@ export const generateMockBooks = (count = 100) => {
 const generateBookDescription = (
   title: string,
   author: string,
-  genre: (typeof bookGenres)[number]
+  genre: (typeof bookGenres)[number],
 ) => {
   const plot = faker.lorem.sentence();
   const setting =
@@ -84,7 +84,7 @@ const generateBookDescription = (
  */
 export const getBookSearchObj = (
   filter: string,
-  search: string | undefined
+  search: string | undefined,
 ): FilterQuery<ISearchBookParams> => {
   const obj: FilterQuery<ISearchBookParams> = {};
 

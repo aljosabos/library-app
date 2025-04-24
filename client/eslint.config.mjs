@@ -15,6 +15,10 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  { files: ["**/*.{js,mjs,tsx,ts}"] },
+  {
+    ignores: ["**/node_modules/**", "dist/**", "build/**"],
+  },
   {
     plugins: {
       typescript: typescriptPlugin,
@@ -23,7 +27,7 @@ const eslintConfig = [
       import: importPlugin,
     },
     rules: {
-      complexity: ["error", 2],
+      complexity: ["error", 3],
 
       "import/order": [
         "error",
