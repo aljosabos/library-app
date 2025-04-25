@@ -31,8 +31,6 @@ export const updateUser = async (
 
     const data = await response.json();
 
-    console.log(data);
-
     if (!response.ok) {
       return {
         success: false,
@@ -63,6 +61,9 @@ const getSanitizedData = (
   if (data.password) {
     sanitizedData.password = data.password;
     sanitizedData.oldPassword = data.oldPassword;
+  }
+
+  if (data.oldPassword) {
   }
 
   addSanitazedBooksData(sanitizedData, data.books);

@@ -74,7 +74,10 @@ export const updateUser = async (req: Request, res: Response) => {
   const user = await User.findById(req.user?.userId);
   const isAdmin = user?.isAdmin;
 
+  console.log("user", user);
+
   if (isAdmin) {
+    console.log("update by admin");
     await handleUpdateByAdmin(req, res);
     return;
   } else {
@@ -90,8 +93,10 @@ export const updateUser = async (req: Request, res: Response) => {
 const handleUpdateByAdmin = async (req: Request, res: Response) => {
   const { password } = req.body;
 
-  const hashedPassword = await hashPassword(password);
-  req.body.password = hashedPassword;
+  if (password) {
+    const hashedPassword = await hashPassword(password);
+    req.body.password = hashedPassword;
+  }
 
   const updatedUser = await User.findOneAndUpdate(
     { _id: req.params.id },
