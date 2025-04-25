@@ -25,6 +25,6 @@ A full-stack library management system with a **Next.js frontend** and an **Expr
 - **Client**: [Next.js](https://nextjs.org/) (React, Tailwind CSS, ShadCN)
 - **Server**: [Express.js](https://expressjs.com/) (Node.js)
 - **Database**: MongoDB / PostgreSQL (your choice)
-- **Authentication**: JWT 
+- **Authentication**: JWT, cookie
 
 ---
