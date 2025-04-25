@@ -247,8 +247,8 @@ export const ProfileDetails = () => {
             books={userBooks}
             hideId
             hideDetails
-            className="my-0"
             onDelete={handleRemoveBook}
+            title="Borrowed books"
           />
         </div>
       </div>

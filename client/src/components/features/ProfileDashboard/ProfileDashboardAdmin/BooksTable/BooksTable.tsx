@@ -55,7 +55,7 @@ export const BooksTable = ({
               <TableHead className="min-w-[500px] font-bold">
                 Description
               </TableHead>
-              {renderDeleteHeading()}
+              {renderDeleteHeading(onDelete)}
             </TableRow>
           </TableHeader>
 
@@ -82,7 +82,7 @@ export const BooksTable = ({
                       <div className="flex h-full cursor-pointer items-center justify-center p-2">
                         <CircleX
                           width={18}
-                          onClick={() => onDelete && onDelete(book._id)}
+                          onClick={() => onDelete(book._id)}
                         />
                       </div>
                     </TableCell>
@@ -105,5 +105,5 @@ export const BooksTable = ({
   );
 };
 
-const renderDeleteHeading = (deleteCallback?: () => void) =>
+const renderDeleteHeading = (deleteCallback?: (id: string) => void) =>
   deleteCallback && <TableHead className="px-4 font-bold">Delete</TableHead>;
