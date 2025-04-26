@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { FilterQuery } from "mongoose";
 
+import { Book } from "../models/book";
 import { bookGenres } from "../src/constants/bookConstants";
 import { ISearchBookParams } from "../types";
 
@@ -37,7 +38,7 @@ export const generateMockBooks = (count = 100) => {
 const generateBookDescription = (
   title: string,
   author: string,
-  genre: (typeof bookGenres)[number],
+  genre: (typeof bookGenres)[number]
 ) => {
   const plot = faker.lorem.sentence();
   const setting =
@@ -82,9 +83,9 @@ const generateBookDescription = (
  * @param search string | undefined
  * @returns
  */
-export const getBookSearchObj = (
+export const getBooksSearchQuery = (
   filter: string,
-  search: string | undefined,
+  search: string | undefined
 ): FilterQuery<ISearchBookParams> => {
   const obj: FilterQuery<ISearchBookParams> = {};
 
@@ -100,4 +101,14 @@ export const getBookSearchObj = (
   }
 
   return obj;
+};
+
+export const seedBooksIfEmpty = async () => {
+  const numOfBooks = await Book.countDocuments();
+
+  if (numOfBooks === 0) {
+    // If no books exist, seed mock books
+    const booksForSeed = generateMockBooks();
+    await Book.insertMany(booksForSeed);
+  }
 };
