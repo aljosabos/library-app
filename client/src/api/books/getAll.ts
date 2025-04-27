@@ -17,7 +17,9 @@ export interface IBook {
 
 export interface IGetAllBooksResponse {
   books: IBook[];
-  count: number;
+  currentPage: number;
+  totalBooks: number;
+  numOfPages: number;
 }
 export const getAllBooks = async (
   params: ISearchBookParams,
@@ -28,6 +30,8 @@ export const getAllBooks = async (
       `${process.env.NEXT_PUBLIC_BASE_URL}/books?${queryParams}`,
     );
     const data: IGetAllBooksResponse | undefined = await response.json();
+
+    console.log(data);
 
     return data;
   } catch (err) {

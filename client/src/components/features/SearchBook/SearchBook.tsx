@@ -3,8 +3,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { IBook } from "@/api/books/getAll";
-import { getAllBooksAction } from "@/app/actions/bookActions/getAll";
+import { getAllBooks, IGetAllBooksResponse } from "@/api/books/getAll";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   Select,
   SelectContent,
@@ -30,10 +38,8 @@ type ISearchBookParams = {
   filter: "title" | "author";
 };
 
-const emptyArr: IBook[] = [];
-
 export const SearchBook = () => {
-  const [books, setBooks] = useState<IBook[]>(emptyArr);
+  const [booksData, setBooksData] = useState<IGetAllBooksResponse>();
   const form = useForm<ISearchBookParams>({
     defaultValues: {
       filter: "title",
@@ -42,9 +48,8 @@ export const SearchBook = () => {
   });
 
   const handleFormSubmit = async (fields: ISearchBookParams) => {
-    const data = await getAllBooksAction(fields);
-
-    if (data?.books) setBooks(data?.books);
+    const data = await getAllBooks(fields);
+    if (data) setBooksData(data);
   };
 
   return (
@@ -102,10 +107,42 @@ export const SearchBook = () => {
       </Form>
 
       <div className="mt-6 h-auto">
-        {books?.map((book, idx) => (
+        {booksData?.books.map((book, idx) => (
           <Book {...book} key={book._id} index={idx + 1} />
         ))}
       </div>
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href="#"
+              className="text-inherit no-underline"
+            />
+          </PaginationItem>
+
+          {Array.from(
+            { length: booksData?.numOfPages || 0 },
+            (_, index) => index + 1,
+          ).map((page, index) => (
+            <PaginationItem key={index}>
+              <PaginationLink
+                href=""
+                isActive={page === booksData?.currentPage}
+                className="text-inherit no-underline"
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href="#" className="text-inherit no-underline" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };
