@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import { Book } from "../models/book";
 import { ISearchBookParams } from "../types";
-import { getBooksSearchQuery, seedBooksIfEmpty } from "../utils/booksUtils";
+import { getSearchBooksQuery, seedBooksIfEmpty } from "../utils/booksUtils";
 
 /**
  * Retrieves books from the DB.
@@ -16,15 +16,17 @@ export const getAllBooks = async (
   res: Response
 ) => {
   try {
-    const { filter, search, page = 1, limit = 10 } = req.query;
+    const { searchBy, search, page = 1, limit = 10 } = req.query;
     const parsedPage = Number(page);
     const parsedLimit = Number(limit);
     const skip = (parsedPage - 1) * parsedLimit;
 
+    console.log(req.query);
+
     await seedBooksIfEmpty();
 
     // Build search query
-    const searchQuery = getBooksSearchQuery(filter, search);
+    const searchQuery = getSearchBooksQuery(searchBy, search);
 
     const [books, totalBooks] = await Promise.all([
       Book.find(searchQuery).skip(skip).limit(parsedLimit),

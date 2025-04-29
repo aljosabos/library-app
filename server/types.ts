@@ -4,7 +4,7 @@ export interface CustomError extends Error {
 
 export interface ISearchBookParams {
   search?: string;
-  filter: string;
+  searchBy: string;
   page: number;
   limit?: number;
 }

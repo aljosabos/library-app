@@ -83,16 +83,16 @@ const generateBookDescription = (
  * @param search string | undefined
  * @returns
  */
-export const getBooksSearchQuery = (
-  filter: string,
+export const getSearchBooksQuery = (
+  searchBy: string,
   search: string | undefined
 ): FilterQuery<ISearchBookParams> => {
-  const obj: FilterQuery<ISearchBookParams> = {};
+  const query: FilterQuery<ISearchBookParams> = {};
 
   if (search) {
-    obj.$or = [
+    query.$or = [
       {
-        [filter]: {
+        [searchBy]: {
           $regex: search,
           $options: "i",
         },
@@ -100,7 +100,7 @@ export const getBooksSearchQuery = (
     ];
   }
 
-  return obj;
+  return query;
 };
 
 export const seedBooksIfEmpty = async () => {
