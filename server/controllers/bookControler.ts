@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import { Book } from "../models/book";
 import { ISearchBookParams } from "../types";
-import { getBookSearchObj, generateMockBooks } from "../utils/booksUtils";
+import { getSearchBooksQuery, seedBooksIfEmpty } from "../utils/booksUtils";
 
 /**
  * Retrieves books from the DB.
@@ -13,24 +13,33 @@ import { getBookSearchObj, generateMockBooks } from "../utils/booksUtils";
  */
 export const getAllBooks = async (
   req: Request<unknown, unknown, unknown, ISearchBookParams>,
-  res: Response,
+  res: Response
 ) => {
   try {
-    let books;
+    const { searchBy, search, page = 1, limit = 10 } = req.query;
+    const parsedPage = Number(page);
+    const parsedLimit = Number(limit);
+    const skip = (parsedPage - 1) * parsedLimit;
 
-    const hasBooks = (await Book.countDocuments()) > 0;
+    console.log(req.query);
 
-    if (!hasBooks) {
-      const mockBooks = generateMockBooks();
-      books = await Book.insertMany(mockBooks);
-    } else {
-      const { filter, search } = req.query;
+    await seedBooksIfEmpty();
 
-      const searchObj = getBookSearchObj(filter, search);
+    // Build search query
+    const searchQuery = getSearchBooksQuery(searchBy, search);
 
-      books = await Book.find(searchObj);
-    }
-    res.status(StatusCodes.OK).json({ books, count: books.length });
+    const [books, totalBooks] = await Promise.all([
+      Book.find(searchQuery).skip(skip).limit(parsedLimit),
+      Book.countDocuments(searchQuery),
+    ]);
+    const numOfPages = Math.ceil(totalBooks / parsedLimit);
+
+    res.status(StatusCodes.OK).json({
+      books,
+      currentPage: parsedPage,
+      totalBooks,
+      numOfPages,
+    });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: error });
   }

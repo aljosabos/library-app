@@ -9,7 +9,7 @@ import { UsersTable } from "./UsersTable/UsersTable";
 export const ProfileDashboardAdmin = async () => {
   const [users, booksData] = await Promise.all([
     getAllUsers(),
-    getAllBooks({ filter: "title", search: "" }),
+    getAllBooks({ searchBy: "title", search: "" }),
   ]);
   return (
     <div className="flex flex-col gap-8">

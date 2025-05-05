@@ -2,7 +2,8 @@
 
 interface ISearchBookParams {
   search?: string;
-  filter: "title" | "author";
+  searchBy: "title" | "author";
+  page?: number;
 }
 
 export interface IBook {
@@ -17,7 +18,9 @@ export interface IBook {
 
 export interface IGetAllBooksResponse {
   books: IBook[];
-  count: number;
+  currentPage: number;
+  totalBooks: number;
+  numOfPages: number;
 }
 export const getAllBooks = async (
   params: ISearchBookParams,
@@ -27,6 +30,8 @@ export const getAllBooks = async (
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/books?${queryParams}`,
     );
+
+    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/books?${queryParams}`);
     const data: IGetAllBooksResponse | undefined = await response.json();
 
     return data;
@@ -38,7 +43,8 @@ export const getAllBooks = async (
 const addQueryParams = (params: ISearchBookParams) => {
   const queryParams = new URLSearchParams({
     ...(params.search && { search: params.search }),
-    filter: params.filter,
+    searchBy: params.searchBy,
+    page: String(params.page),
   }).toString();
 
   return queryParams;

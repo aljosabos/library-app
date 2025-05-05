@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
 
-import { IBook } from "@/api/books/getAll";
-import { getAllBooksAction } from "@/app/actions/bookActions/getAll";
+import { getAllBooks, IGetAllBooksResponse } from "@/api/books/getAll";
 import {
   Select,
   SelectContent,
@@ -12,40 +10,69 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDebounce } from "@/hooks/useDebonce";
 import { Typography } from "@components/Typography/Typography";
-import { Button } from "@components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@components/ui/form";
 import { Input } from "@components/ui/input";
+import { Label } from "@components/ui/label";
 import { Book } from "@features/Book/Book";
+import { PaginationButtons } from "@features/Pagination/PaginationButtons";
+
+import { initialBooksData } from "./SearchBook.constants";
 
 type ISearchBookParams = {
   search?: string;
-  filter: "title" | "author";
+  searchBy: "title" | "author";
+  page: number;
 };
 
-const emptyArr: IBook[] = [];
-
 export const SearchBook = () => {
-  const [books, setBooks] = useState<IBook[]>(emptyArr);
-  const form = useForm<ISearchBookParams>({
-    defaultValues: {
-      filter: "title",
-      search: "",
-    },
+  const [{ books, currentPage, numOfPages }, setBooksData] =
+    useState<IGetAllBooksResponse>(initialBooksData);
+
+  const [filters, setFilters] = useState<ISearchBookParams>({
+    search: "",
+    searchBy: "title",
+    page: 1,
   });
 
-  const handleFormSubmit = async (fields: ISearchBookParams) => {
-    const data = await getAllBooksAction(fields);
+  const debouncedSearch = useDebounce(filters.search);
 
-    if (data?.books) setBooks(data?.books);
+  useEffect(() => {
+    const filtersWithDebouncedSearch = {
+      search: debouncedSearch,
+      searchBy: filters.searchBy,
+      page: filters.page,
+    };
+
+    getAllBooks(filtersWithDebouncedSearch).then((data) => {
+      if (data) {
+        setBooksData(data);
+      }
+    });
+  }, [debouncedSearch, filters.searchBy, filters.page]);
+
+  const handleOnPageClick = (page: number) => {
+    setFilters((currFilters) => ({ ...currFilters, page }));
   };
+
+  const handleNextBtnClick = useCallback(() => {
+    let nextPage = currentPage + 1;
+    if (nextPage > numOfPages) nextPage = 1;
+    setFilters((currFilters) => ({
+      ...currFilters,
+      page: nextPage,
+    }));
+  }, [currentPage, numOfPages]);
+
+  const handlePreviousBtnClick = useCallback(() => {
+    let prevPage = currentPage - 1;
+    if (prevPage < 1) prevPage = numOfPages;
+
+    setFilters((currFilters) => ({
+      ...currFilters,
+      page: prevPage,
+    }));
+  }, [currentPage, numOfPages]);
 
   return (
     <div>
@@ -53,59 +80,54 @@ export const SearchBook = () => {
         Search book
       </Typography>
 
-      <Form {...form}>
-        <form
-          className="flex flex-col gap-6"
-          onSubmit={form.handleSubmit(handleFormSubmit)}
-        >
-          <div className="flex items-end gap-4">
-            <FormField
-              control={form.control}
-              name="filter"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Search by</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="min-w-[150px]">
-                        <SelectValue placeholder="Search book by" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="title">Title</SelectItem>
-                      <SelectItem value="author">Author</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <div className="flex items-end gap-4">
+        <div className="flex flex-col gap-2">
+          <Label className="text-sm font-medium">Search by</Label>
+          <Select
+            value={filters.searchBy}
+            onValueChange={(value) =>
+              setFilters((prev) => ({
+                ...prev,
+                searchBy: value as "title" | "author",
+              }))
+            }
+          >
+            <SelectTrigger className="min-w-[150px]">
+              <SelectValue placeholder="Search book by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="title">Title</SelectItem>
+              <SelectItem value="author">Author</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-            <FormField
-              control={form.control}
-              name="search"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Search" {...field} autoComplete="off" />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button>Search</Button>
-          </div>
-        </form>
-      </Form>
+        <div className="flex flex-col gap-2">
+          <Label className="text-sm font-medium">Name</Label>
+          <Input
+            placeholder="Search"
+            autoComplete="off"
+            value={filters.search}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, search: e.target.value }))
+            }
+          />
+        </div>
+      </div>
 
       <div className="mt-6 h-auto">
-        {books?.map((book, idx) => (
-          <Book {...book} key={book._id} index={idx + 1} />
+        {books.map((book) => (
+          <Book {...book} key={book._id} />
         ))}
       </div>
+
+      <PaginationButtons
+        currentPage={currentPage}
+        numOfPages={numOfPages}
+        onPageClick={handleOnPageClick}
+        onNext={handleNextBtnClick}
+        onPrevious={handlePreviousBtnClick}
+      />
     </div>
   );
 };

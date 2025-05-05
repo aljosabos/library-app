@@ -13,8 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getAllBooksAction } from "@actions/bookActions/getAll";
-import { IBook } from "@api/books/getAll";
+import { getAllBooks, IBook } from "@api/books/getAll";
 import { getUser, IUser } from "@api/user/get";
 import { updateUser } from "@api/user/update";
 import { Typography } from "@components/Typography/Typography";
@@ -58,7 +57,7 @@ export const ProfileDetails = () => {
       const [userData, allBooksData] = await Promise.all([
         getUser(id),
         // Todo: Add way to call endpoint with default filters
-        getAllBooksAction({ filter: "title", search: "" }),
+        getAllBooks({ searchBy: "title", search: "" }),
       ]);
 
       if (allBooksData) {
