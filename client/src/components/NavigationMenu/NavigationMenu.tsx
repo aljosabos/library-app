@@ -15,6 +15,8 @@ interface INavigationMenuProps {
 export const NavigationMenu = ({ currentUser }: INavigationMenuProps) => {
   const router = useRouter();
 
+  console.log(currentUser);
+
   const handleLogout = async () => {
     const response = await logoutUser();
 
