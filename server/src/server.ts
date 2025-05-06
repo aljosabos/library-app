@@ -16,14 +16,30 @@ import { seedUsers } from "../utils/seed";
 dotenv.config();
 const app = express();
 
+// Enhanced CORS configuration
+const allowedOrigins = [
+  process.env.FRONTEND_DEVELOPMENT_URL,
+  process.env.FRONTEND_PRODUCTION_URL,
+].filter(Boolean); 
+
 app.use(
   cors({
-    origin: "http://localhost:3015",
-    credentials: true,
-  }),
-);
-app.use(cookieParser());
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
 
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      return callback(new Error(msg), false);
+    },
+    credentials: true,
+  })
+);
+
+app.use(cookieParser());
 app.use(express.json());
 
 // Routes
@@ -52,9 +68,10 @@ const start = async () => {
     await connectDB();
     await seedUsers();
 
-    const port = process.env.PORT;
+    const port = process.env.PORT || 5000;
     app.listen(port, () => {
-      console.log(`Server is listening on the port ${port}...`);
+      console.log(`Server is listening on port ${port}...`);
+      console.log(`Allowed CORS origins: ${allowedOrigins.join(", ")}`);
     });
   } catch (err) {
     console.log(err);

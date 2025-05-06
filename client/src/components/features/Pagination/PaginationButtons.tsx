@@ -30,7 +30,6 @@ export const PaginationButtons = ({
   const pages: (number | "...")[] = [];
 
   if (numOfPages <= maxVisiblePages) {
-    // Show all pages if total pages are 5 or less
     for (let i = 1; i <= numOfPages; i++) {
       pages.push(i);
     }
