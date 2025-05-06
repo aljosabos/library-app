@@ -91,7 +91,7 @@ export const LoginUser = () => {
               </Link>
             </Typography>
 
-            <Button>Login</Button>
+            <Button type="submit">Login</Button>
           </div>
         </form>
       </Form>
