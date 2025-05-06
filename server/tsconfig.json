@@ -110,6 +110,9 @@
 
     "paths": {
       "@utils/*": ["./src/utils/*"]
-    }
-  }
+    },
+
+    "outDir": "./dist"
+  },
+  "exclude": ["dist", "node_modules"]
 }
