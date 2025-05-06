@@ -23,9 +23,9 @@ export const getCurrentUser = async (): Promise<
         Cookie: cookie,
       },
     });
-    const { user } = await response.json();
+    const data = await response.json();
 
-    return user;
+    return data?.user;
   } catch (err) {
     console.log(err);
   }
