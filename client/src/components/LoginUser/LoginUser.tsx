@@ -7,7 +7,6 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { loginUser } from "@/api/auth/login";
-import { revalidate } from "@actions/route/revalidate";
 import { Typography } from "@components/Typography/Typography";
 import { Button } from "@components/ui/button";
 import {
@@ -37,7 +36,7 @@ export const LoginUser = () => {
     const response = await loginUser(data);
 
     if (response.success) {
-      revalidate("/");
+      // revalidate("/");
       router.push("/");
     }
 
