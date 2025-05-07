@@ -57,7 +57,7 @@ export const loginUser = async (req: Request, res: Response) => {
     expires: new Date(Date.now() + oneDay),
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     secure: process.env.NODE_ENV === "production",
-    domain: ".vercel.app",
+    domain: "library-app-ashen-two.vercel.app",
   });
 
   res.status(StatusCodes.OK).json({ user });
