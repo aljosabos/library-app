@@ -19,7 +19,6 @@ export const getCurrentUser = async (): Promise<
       `${process.env.NEXT_PUBLIC_BASE_URL}/users/current`,
       {
         method: "GET",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Cookie: cookie,
