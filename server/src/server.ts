@@ -20,20 +20,12 @@ const app = express();
 const allowedOrigins = [
   process.env.FRONTEND_DEVELOPMENT_URL,
   process.env.FRONTEND_PRODUCTION_URL,
-].filter(Boolean); 
+].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-      return callback(new Error(msg), false);
+      callback(null, origin || "*");
     },
     credentials: true,
   })

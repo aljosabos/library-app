@@ -31,8 +31,6 @@ export const loginUser = async (data: ILoginData) => {
 
   const result = await response.json();
 
-  console.log("login user result", result);
-
   if (!response.ok) {
     return {
       success: false,
