@@ -12,7 +12,7 @@ export const getCurrentUser = async (): Promise<
 > => {
   const cookie = await getAuthCookie();
 
-  console.log(cookie);
+  console.log("COOKIE", cookie);
 
   try {
     const response = await fetch(
