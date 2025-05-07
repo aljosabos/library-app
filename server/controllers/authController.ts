@@ -53,7 +53,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
   // add cookie
   res.cookie("token", token, {
-    httpOnly: false,
+    httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     sameSite: "none",
     secure: true,
