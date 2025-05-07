@@ -57,6 +57,7 @@ export const loginUser = async (req: Request, res: Response) => {
     expires: new Date(Date.now() + oneDay),
     sameSite: "none",
     secure: true,
+    path: "/",
   });
 
   res.status(StatusCodes.OK).json({ user });
