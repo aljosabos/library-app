@@ -5,6 +5,9 @@ import { User } from "../models/user";
 import { comparePasswords, hashPassword } from "../utils/passwordUtils";
 import { createJWT } from "../utils/tokenUtils";
 
+const domain =
+  process.env.NODE_ENV === "production" ? ".library-app.xyz" : undefined;
+
 export const registerUser = async (req: Request, res: Response) => {
   const email = req.body.email;
 
@@ -57,8 +60,7 @@ export const loginUser = async (req: Request, res: Response) => {
     expires: new Date(Date.now() + oneDay),
     sameSite: "none",
     secure: true,
-    domain:
-      process.env.NODE_ENV === "production" ? ".library-app.xyz" : undefined,
+    domain,
   });
 
   res.status(StatusCodes.OK).json({ user });
@@ -70,8 +72,7 @@ export const logout = (req: Request, res: Response) => {
     expires: new Date(0),
     secure: true,
     sameSite: "none",
-    domain:
-      process.env.NODE_ENV === "production" ? ".library-app.xyz" : undefined,
+    domain,
   });
 
   res.status(StatusCodes.OK).json({ msg: "User logged out" });

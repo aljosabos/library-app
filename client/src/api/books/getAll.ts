@@ -31,7 +31,6 @@ export const getAllBooks = async (
       `${process.env.NEXT_PUBLIC_BASE_URL}/books?${queryParams}`,
     );
 
-    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/books?${queryParams}`);
     const data: IGetAllBooksResponse | undefined = await response.json();
 
     return data;

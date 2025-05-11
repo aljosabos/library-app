@@ -12,8 +12,6 @@ export const getCurrentUser = async (): Promise<
 > => {
   const cookie = await getAuthCookie();
 
-  console.log("COOKIE", cookie);
-
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/users/current`,

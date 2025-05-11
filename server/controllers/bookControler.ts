@@ -21,8 +21,6 @@ export const getAllBooks = async (
     const parsedLimit = Number(limit);
     const skip = (parsedPage - 1) * parsedLimit;
 
-    console.log(req.query);
-
     await seedBooksIfEmpty();
 
     // Build search query

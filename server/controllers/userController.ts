@@ -74,10 +74,7 @@ export const updateUser = async (req: Request, res: Response) => {
   const user = await User.findById(req.user?.userId);
   const isAdmin = user?.isAdmin;
 
-  console.log("user", user);
-
   if (isAdmin) {
-    console.log("update by admin");
     await handleUpdateByAdmin(req, res);
     return;
   } else {
