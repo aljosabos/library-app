@@ -57,6 +57,8 @@ export const loginUser = async (req: Request, res: Response) => {
     expires: new Date(Date.now() + oneDay),
     sameSite: "none",
     secure: true,
+    domain:
+      process.env.NODE_ENV === "production" ? ".library-app.xyz" : undefined,
   });
 
   res.status(StatusCodes.OK).json({ user });
@@ -65,9 +67,11 @@ export const loginUser = async (req: Request, res: Response) => {
 export const logout = (req: Request, res: Response) => {
   res.cookie("token", "", {
     httpOnly: true,
-    expires: new Date(0), 
-    secure: true, 
-    sameSite: "none", 
+    expires: new Date(0),
+    secure: true,
+    sameSite: "none",
+    domain:
+      process.env.NODE_ENV === "production" ? ".library-app.xyz" : undefined,
   });
 
   res.status(StatusCodes.OK).json({ msg: "User logged out" });
