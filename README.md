@@ -20,11 +20,26 @@ A full-stack library management system with a **Next.js frontend** and an **Expr
 
 ---
 
+## 🧪 Default Users
+
+The application includes two default users for testing:
+
+- **User**  
+  - Email: `user@user.com`  
+  - Password: `user`
+
+- **Admin**  
+  - Email: `admin@admin.com`  
+  - Password: `admin`
+
+---
+
 ## 🧩 Tech Stack
 
 - **Client**: [Next.js](https://nextjs.org/) (React, Tailwind CSS, ShadCN)
 - **Server**: [Express.js](https://expressjs.com/) (Node.js)
 - **Database**: MongoDB / PostgreSQL (your choice)
 - **Authentication**: JWT, cookie
+
 
 ---
